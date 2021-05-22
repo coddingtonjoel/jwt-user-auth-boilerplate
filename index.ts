@@ -5,6 +5,7 @@ const cors = require("cors");
 
 // routes
 const auth = require("./routes/auth");
+const protectedRoute = require("./routes/protected");
 
 const app = express();
 const PORT = 8000;
@@ -29,3 +30,4 @@ app.listen(PORT, () => {
 });
 
 app.use("/auth/user", auth);
+app.use("/protected", protectedRoute);

@@ -2,6 +2,7 @@ const express = require("express");
 import bcrypt from "bcryptjs";
 const router = express.Router();
 const User = require("../models/User");
+import jwt from "jsonwebtoken";
 import { loginValidation, registerValidation } from "../models/validation";
 
 interface User {
@@ -9,6 +10,7 @@ interface User {
     lastName: string;
     email: string;
     password: string;
+    _id: string;
 }
 
 router.post("/register", async (req: any, res: any) => {
@@ -65,6 +67,10 @@ router.post("/login", async (req: any, res: any) => {
     if (!validPass) {
         return res.status(400).send("Email or password is incorrect");
     }
+
+    // create jwt
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET!);
+    res.header("auth-token", token);
 
     res.send("Logged in!");
 });
